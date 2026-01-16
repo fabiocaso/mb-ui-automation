@@ -13,31 +13,32 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        String browser = ConfigReader.get("browser");
-        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless"));
+
         String baseUrl = ConfigReader.get("base.url");
 
-        WebDriverManager.chromedriver().setup();
+        String os = System.getProperty("os.name").toLowerCase();
+        boolean isLinux = os.contains("linux");
+
+        boolean headless = Boolean.parseBoolean(ConfigReader.get("headless"));
+
         ChromeOptions options = new ChromeOptions();
 
-        if (headless) {
-                options.addArguments(
-                        "--headless=new",
-                        "--no-sandbox",
-                        "--disable-dev-shm-usage",
-                        "--window-size=1920,1080"
-                );
-            }
+        options.addArguments(
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--window-size=1920,1080"
+        );
 
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        if (headless || isLinux) {
+            options.addArguments("--headless=new");
+        }
+
+        System.out.println("Chrome options: " + options.asMap());
+
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver(options);
+
         driver.get(baseUrl);
     }
-
-        @AfterMethod
-        public void tearDown() {
-            if (driver != null) {
-                driver.quit();
-            }
-        }
-    }
+}
