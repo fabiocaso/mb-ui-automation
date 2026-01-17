@@ -1,10 +1,8 @@
-name: UI Automation Tests
+name: UI Tests
 
 on:
   push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   ui-tests:
@@ -14,21 +12,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Run UI Tests
+      - name: Run tests
         run: mvn clean test -Dheadless=true
 
-      - name: Upload Allure Results
-        uses: actions/upload-artifact@v4
+      - name: Upload Allure results
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-            name: allure-results
-            path: target/allure-results
+          name: allure-results
+          path: target/allure-results
+
+      - name: Generate Allure Report
+        if: always()
+        run: mvn allure:report
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+
