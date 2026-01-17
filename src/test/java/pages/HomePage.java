@@ -3,6 +3,10 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +30,15 @@ public class HomePage {
 
 
     public List<String> getPrimaryMenuTexts() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        By menuItems = By.cssSelector("#primary-menu li");
+        // Wait for menu to be visible
+        wait.until(ExpectedConditions.visibilityOfElementLocated(menuItems));
+
         List<String> menuTexts = new ArrayList<>();
 
-        List<WebElement> menuItems =
-                driver.findElements(By.cssSelector("#primary-menu li"));
 
-        for (WebElement item : menuItems) {
+        for (WebElement item : driver.findElements(menuItems)) {
             menuTexts.add(item.getText().trim());
         }
 
