@@ -1,6 +1,12 @@
 package utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static org.bouncycastle.asn1.x500.style.RFC4519Style.c;
+import static org.bouncycastle.asn1.x500.style.RFC4519Style.dc;
 
 public class StringUtils {
 
@@ -41,4 +47,50 @@ public class StringUtils {
             right--;
         }
     }
-}
+
+    public static Set<Character> findDuplicatesChar(String input) {
+
+        if (input == null)
+            return null;
+
+        Set<Character> duplicates = new HashSet<>();
+        Set<Character> seen = new HashSet<>();
+
+        for (char c : input.toCharArray()) {
+            if (c == ' ')
+                continue;
+
+            if (!seen.add(c)) {
+                duplicates.add(c);
+            }
+        }
+        return duplicates;
+    }
+
+    public static boolean areAnagrams(String word1, String word2) {
+        //if length is different they cannot be anagrams
+        if (word1 == null || word2 == null || word1.length() != word2.length())
+            return false;
+
+        Map<Character, Integer> charCounterMap = new HashMap<>();
+
+        //Count frequency for word 1
+
+        for (char c : word1.toCharArray()) {
+            charCounterMap.put(c, charCounterMap.getOrDefault(c, 0) + 1);
+        }
+
+        for (char c : word2.toCharArray()) {
+            if (!charCounterMap.containsKey(c)) {
+                return false; // char in word 2 not found in word 1
+            }
+
+            charCounterMap.put(c, charCounterMap.get(c) - 1);
+
+            if (charCounterMap.get(c) < 0) {
+                return false; // more occurrences on word 2 than word 1
+            }
+        }
+            return true;
+        }
+    }
