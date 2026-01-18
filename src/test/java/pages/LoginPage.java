@@ -29,9 +29,9 @@ public class LoginPage {
 
     public DashboardPage login() throws InterruptedException {
         driver.findElement(usernameInput).sendKeys(CredentialsProvider.getUserName());
-        log.info(">>>Username: "+driver.findElement(usernameInput).getText());
+        System.out.println(">>>Username: "+driver.findElement(usernameInput).getText());
         driver.findElement(passwordInput).sendKeys(CredentialsProvider.getPassword());
-        log.info(">>>Password: "+CredentialsProvider.getPassword());
+        System.out.println(">>>Password: "+CredentialsProvider.getPassword());
         driver.findElement(loginButton).click();
         return new DashboardPage(driver);
     }
