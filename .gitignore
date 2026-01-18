@@ -41,3 +41,4 @@ build/
 /target
 /.idea
 *.iml
+/src/test/java/config/CredentialsProvider.java
