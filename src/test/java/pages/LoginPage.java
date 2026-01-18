@@ -3,6 +3,9 @@ package pages;
 import config.CredentialsProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import tests.LoginTest;
 import utils.WaitUtils;
 
 public class LoginPage {
@@ -11,6 +14,8 @@ public class LoginPage {
     private final By usernameInput = By.id("username");
     private final By passwordInput = By.id("password");
     private final By loginButton = By.id("kc-login");
+
+    private static final Logger log = LoggerFactory.getLogger(LoginTest.class);
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -24,9 +29,10 @@ public class LoginPage {
 
     public DashboardPage login() throws InterruptedException {
         driver.findElement(usernameInput).sendKeys(CredentialsProvider.getUserName());
+        log.debug(">>>Username: "+CredentialsProvider.getUserName());
         driver.findElement(passwordInput).sendKeys(CredentialsProvider.getPassword());
+        log.debug(">>>Password: "+CredentialsProvider.getPassword());
         driver.findElement(loginButton).click();
-        Thread.sleep(15000); //Wait for the email security code
         return new DashboardPage(driver);
     }
 
