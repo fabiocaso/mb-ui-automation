@@ -20,6 +20,16 @@ jobs:
 
       - name: Run tests
         run: mvn clean test -Dheadless=true
+        env:
+          MB_USERNAME: ${{ secrets.MB_USERNAME }}
+          MB_PASSWORD: ${{ secrets.MB_PASSWORD }}
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+         name: screenshots
+         path: target/screenshots
 
       - name: Upload Allure results
         if: always()
