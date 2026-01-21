@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.bouncycastle.asn1.x500.style.RFC4519Style.c;
-import static org.bouncycastle.asn1.x500.style.RFC4519Style.dc;
 
 public class StringUtils {
 
